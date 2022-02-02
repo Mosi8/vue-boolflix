@@ -4,50 +4,61 @@
     <div class="bottone_cerca" @click="cercaFilm">Cerca</div>
     <h6 @click="paginaSuccessiva">Prossima</h6>
     <Film v-for="(elemento,index) in filmMostrati" :key="index" :schedaFilm="elemento" class="filmSingolo" /> 
-    
+    <Serie v-for="elemento in serieMostrate" :key="elemento.id" :schedaSerie="elemento" class="filmSingolo" /> 
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Film from './commons/Film.vue'
+import Serie from './commons/Serie.vue'
 
 export default {
   name: 'HelloWorld',
   components: {
     Film,
+    Serie
   },
   data(){
     return{
       ricerca: '',
       parolaChiave : '',
-      totaliPagine : "",
-      pagina: '0',
+      totaliPagineFilm : "",
+      totaliPagineSerie: "",
+      paginaFilm: '0',
+      paginaSerie: '0',
       filmMostrati: [],
+      serieMostrate: [],
     }
   },
   methods: {
     paginaSuccessiva(){
       if (this.parolaChiave != '') {
-        this.pagina++;
+        this.paginaFilm++
+        this.paginaSerie++
         this.libreriaFilm()
+        this.libreriaSerie()
       }
     },
     cercaFilm() {
-      this.pagina++
+      this.paginaFilm = ''
+      this.paginaSerie = ''
+      this.paginaFilm++
+      this.paginaSerie++
       this.libreriaFilm()
+      this.libreriaSerie()
     },
     libreriaFilm(){
         axios.get('https://api.themoviedb.org/3/search/movie', {
           params: {
             api_key: '07f0f906009fb4594eaedc34af8f744d',
             query: this.parolaChiave,
-            page: this.pagina,
+            page: this.paginaFilm,
           }
         })
         .then( (response)=> {
-          this.totaliPagine = (response.data.total_pages)
-          if (this.pagina <= this.totaliPagine) {
+          this.totaliPagineFilm = (response.data.total_pages)
+          if (this.paginaFilm <= this.totaliPagineFilm) {
             this.filmMostrati = response.data.results
           }
           console.log(this.filmMostrati);
@@ -56,9 +67,29 @@ export default {
           console.log(error);
         }); 
     },
+    libreriaSerie(){
+        axios.get('https://api.themoviedb.org/3/search/tv', {
+          params: {
+            api_key: '07f0f906009fb4594eaedc34af8f744d',
+            query: this.parolaChiave,
+            page: this.paginaSerie,
+          }
+        })
+        .then( (response)=> {
+          this.totaliPagineSerie = (response.data.total_pages)
+          if (this.paginaSerie <= this.totaliPagineSerie) {
+            this.serieMostrate = response.data.results
+          }
+          console.log(this.serieMostrate);
+        })
+        .catch(function (error) {
+          console.log(error);
+        }); 
+    },
   }
-  
 }
+  
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
