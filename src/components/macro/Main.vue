@@ -1,27 +1,42 @@
 <template>
-  <div class="hello">
-    <input type="text" v-model="parolaChiave" placeholder="Cerca">
-    <div class="bottone_cerca" @click="cercaFilm">Cerca</div>
+  <main>
+    <div class="headerbar">
+      <Search class="searchbar" @search="cercaFilm"/>
+    </div>
+    <!-- <input type="text" v-model="parolaChiave" placeholder="Cerca">
+    <button class="bottone_cerca" @click="cercaFilm">Cerca</button> -->
     <h6 @click="paginaSuccessiva">Prossima</h6>
-    <Film v-for="(elemento,index) in filmMostrati" :key="index" :schedaFilm="elemento" class="filmSingolo" /> 
-    <Serie v-for="elemento in serieMostrate" :key="elemento.id" :schedaSerie="elemento" class="filmSingolo" /> 
-  </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <h1 v-if="filmMostrati != 0" class="text-center">FILM</h1>
+        <Film v-for="(elemento,index) in filmMostrati" :key="index" :schedaFilm="elemento" class="col-2 contenutiSingolo p-0 m-2"/>
+      </div>
+      <div class="row justify-content-center">
+        <h1 v-if="serieMostrate != 0" class="text-center">Serie</h1>
+        <Serie v-for="elemento in serieMostrate" :key="elemento.id" :schedaSerie="elemento" class="col-2 contenutiSingolo p-0 m-2"/> 
+      </div>
+    </div> 
+  </main>
 </template>
 
 <script>
 import axios from 'axios'
-import Film from './commons/Film.vue'
-import Serie from './commons/Serie.vue'
+import Film from '../commons/Film.vue'
+import Serie from '../commons/Serie.vue'
+import Search from '../commons/Search.vue'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Main',
   components: {
     Film,
-    Serie
+    Serie,
+    Search
+  },
+  props: {
+    valorepassato: String
   },
   data(){
     return{
-      ricerca: '',
       parolaChiave : '',
       totaliPagineFilm : "",
       totaliPagineSerie: "",
@@ -33,14 +48,15 @@ export default {
   },
   methods: {
     paginaSuccessiva(){
-      if (this.parolaChiave != '') {
+      if ((this.parolaChiave != '')) {
         this.paginaFilm++
         this.paginaSerie++
         this.libreriaFilm()
         this.libreriaSerie()
       }
     },
-    cercaFilm() {
+    cercaFilm(parolaricercata) {
+      this.parolaChiave = parolaricercata,
       this.paginaFilm = ''
       this.paginaSerie = ''
       this.paginaFilm++
@@ -91,21 +107,41 @@ export default {
   
 
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.filmSingolo {
-  width: 600px;
-  display: inline-block
-  ;
-}
 
-.bottone_cerca {
+main {
+  position: relative;
+  .headerbar {
+    z-index: 200;
+    background-color: #000;
+    height: 60px;
+    position: fixed;
+    display: block;
+
+    .searchbar {
+      height: 40px;
+    }
+  }
+
+  .container {
+    position: relative;
+    top: 60px;
+    color: #000;
+    font-weight: bold;
+  }
+
+  .contenutiSingolo {
   display: inline-block;
-  background-color: blue;
-  color: #fff;
-  padding: 5px 20px;
-  margin-left: 20px;
-  border-radius: 5px;
+  overflow: hidden;
+  }
+
+  .bottone_cerca {
+    display: inline-block;
+    background-color: blue;
+    color: #fff;
+    padding: 5px 20px;
+    margin-left: 20px;
+    border-radius: 5px;
+  }
 }
 </style>
