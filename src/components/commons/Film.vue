@@ -10,6 +10,7 @@
                     <li v-if="schedaFilm.original_language === 'it'"><span>Lingua:</span>  &#127470;&#127481;</li>
                     <li v-else-if="schedaFilm.original_language === 'en'"><span>Lingua:</span>  &#127468;&#127463;</li>
                     <li v-else><span>Lingua:</span>  &#127757;</li>
+                    <li><span>Titolo: </span><i class="fas fa-star m-dorato"  v-for="item in Math.ceil(this.schedaFilm.vote_average/2)" :key="item"></i></li>
                 </ul>
             </div>
         </div>
@@ -21,7 +22,7 @@ export default {
     name: 'Film',
     props: {
        schedaFilm: Object,
-    }
+    },
 }
 </script>
 
@@ -52,9 +53,13 @@ export default {
             padding: 0;
             margin: 0;
             font-size: 15px;
+            font-weight: 400;
 
             span {
-                font-weight: bold;
+                font-weight: 800;
+            }
+            .m-dorato {
+                color: yellow;
             }
         }
     }
