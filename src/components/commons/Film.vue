@@ -10,7 +10,7 @@
                     <li v-if="schedaFilm.original_language === 'it'"><span>Lingua:</span>  &#127470;&#127481;</li>
                     <li v-else-if="schedaFilm.original_language === 'en'"><span>Lingua:</span>  &#127468;&#127463;</li>
                     <li v-else><span>Lingua:</span>  &#127757;</li>
-                    <li><span>Titolo: </span><i class="fas fa-star m-dorato"  v-for="item in Math.ceil(this.schedaFilm.vote_average/2)" :key="item"></i></li>
+                    <li><span>Voto: </span><i class="fas fa-star m-dorato"  v-for="item in Math.ceil(this.schedaFilm.vote_average/2)" :key="item"></i></li>
                 </ul>
             </div>
         </div>
