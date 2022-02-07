@@ -1,16 +1,17 @@
 <template>
     <div>
         <div class="prova">
-            <img v-if="schedaFilm.poster_path != null" :src="'https://image.tmdb.org/t/p/w342'+ schedaFilm.poster_path">
-            <img v-else :src="'https://montagnolirino.it/wp-content/uploads/2015/12/immagine-non-disponibile.png'">
+            <img class="poster" v-if="schedaFilm.poster_path != null" :src="'https://image.tmdb.org/t/p/w342'+ schedaFilm.poster_path">
+            <img class="poster" v-else :src="'https://montagnolirino.it/wp-content/uploads/2015/12/immagine-non-disponibile.png'">
             <div class="infotitolo">
                 <ul>
                     <li><span>Titolo:</span> {{schedaFilm.title}}</li>
                     <li><span>Titolo Originale:</span>  {{schedaFilm.original_title}}</li>
-                    <li v-if="schedaFilm.original_language === 'it'"><span>Lingua:</span>  &#127470;&#127481;</li>
-                    <li v-else-if="schedaFilm.original_language === 'en'"><span>Lingua:</span>  &#127468;&#127463;</li>
-                    <li v-else><span>Lingua:</span>  &#127757;</li>
-                    <li><span>Voto: </span><i class="fas fa-star m-dorato"  v-for="item in Math.ceil(this.schedaFilm.vote_average/2)" :key="item"></i></li>
+                    <li><span>Lingua: <img :src="require('../../assets/img/flags/'+ schedaFilm.original_language+'.png')"></span></li>
+                    <li><span>Voto: </span>
+                        <span><i v-for="item in numStelle(schedaFilm.vote_average)" :key="item" class="fas fa-star m-dorato"></i></span>
+                        <span><i v-for="item in (5-numStelle(schedaFilm.vote_average))" :key="item" class="far fa-star"></i></span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -23,6 +24,11 @@ export default {
     props: {
        schedaFilm: Object,
     },
+    methods: {
+        numStelle(stelle){
+            return Math.ceil(stelle/2)
+        }
+    }
 }
 </script>
 
@@ -57,6 +63,9 @@ export default {
 
             span {
                 font-weight: 800;
+                img {
+                    width: 20px;
+                }
             }
             .m-dorato {
                 color: yellow;
@@ -65,7 +74,7 @@ export default {
     }
 }
 
-.prova:hover img{
+.prova:hover .poster{
     filter: brightness(0.2);
 }
 .prova:hover .infotitolo{

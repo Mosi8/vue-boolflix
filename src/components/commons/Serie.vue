@@ -1,16 +1,17 @@
 <template>
     <div>
         <div class="prova">
-            <img v-if="schedaSerie.poster_path != null" :src="'https://image.tmdb.org/t/p/w342'+ schedaSerie.poster_path">
-            <img v-else :src="'https://montagnolirino.it/wp-content/uploads/2015/12/immagine-non-disponibile.png'">
+            <img class="poster" v-if="schedaSerie.poster_path != null" :src="'https://image.tmdb.org/t/p/w342'+ schedaSerie.poster_path">
+            <img class="poster" v-else :src="'https://montagnolirino.it/wp-content/uploads/2015/12/immagine-non-disponibile.png'">
             <div class="infotitolo">
                 <ul>
                     <li><span>Titolo:</span> {{schedaSerie.name}}</li>
                     <li><span>Overview:</span> {{schedaSerie.overview}}</li>
-                    <li v-if="schedaSerie.original_language === 'it'"><span>Lingua:</span>  &#127470;&#127481;</li>
-                    <li v-else-if="schedaSerie.original_language === 'en'"><span>Lingua:</span>  &#127468;&#127463;</li>
-                    <li v-else><span>Lingua:</span>  &#127757;</li>
-                    <li><span>Voto: </span><i class="fas fa-star m-dorato"  v-for="item in Math.ceil(this.schedaSerie.vote_average/2)" :key="item"></i></li>
+                    <li><span>Lingua: <img :src="require('../../assets/img/flags/'+ schedaSerie.original_language+'.png')"></span></li>
+                    <li><span>Voto: </span>
+                        <span><i v-for="item in numStelle(schedaSerie.vote_average)" :key="item" class="fas fa-star m-dorato"></i></span>
+                        <span><i v-for="item in (5-numStelle(schedaSerie.vote_average))" :key="item" class="far fa-star"></i></span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -22,6 +23,11 @@ export default {
     name: 'Serie',
     props: {
        schedaSerie: Object,
+    },
+    methods: {
+        numStelle(stelle){
+            return Math.ceil(stelle/2)
+        }
     }
 }
 </script>
@@ -58,6 +64,9 @@ export default {
 
             span {
                 font-weight: 800;
+                img {
+                    width: 20px;
+                }
             }
             .m-dorato {
                 color: yellow;
@@ -66,7 +75,7 @@ export default {
     }
 }
 
-.prova:hover img{
+.prova:hover .poster{
     filter: brightness(0.2);
 }
 .prova:hover .infotitolo{
