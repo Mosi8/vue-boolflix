@@ -16,7 +16,7 @@ export default {
     animation: giro 0.2s linear infinite;
     color: #fff;
     font-size: 100px;
-    margin-top: 30px;
+    margin-top: 200px;
 }
 
 @keyframes giro {

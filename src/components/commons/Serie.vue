@@ -7,7 +7,7 @@
                 <ul>
                     <li><span>Titolo:</span> {{schedaSerie.name}}</li>
                     <li><span>Overview:</span> {{schedaSerie.overview}}</li>
-                    <li><span>Lingua: <img :src="require('../../assets/img/flags/'+ schedaSerie.original_language+'.png')"></span></li>
+                    <li><span>Lingua: <img :src="require('../../assets/img/flags/'+ schedaSerie.original_language+'.png')" :alt="schedaSerie.original_language"></span></li>
                     <li><span>Voto: </span>
                         <span><i v-for="item in numStelle(schedaSerie.vote_average)" :key="item" class="fas fa-star m-dorato"></i></span>
                         <span><i v-for="item in (5-numStelle(schedaSerie.vote_average))" :key="item" class="far fa-star"></i></span>
@@ -39,8 +39,9 @@ export default {
     height: 100%;
     width: 100%;
 
-    img {
+    .poster {
     height: 100%;
+    min-height: 336px;
     width: 100%;
     object-position: center;
     }

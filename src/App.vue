@@ -10,7 +10,9 @@
       :numpagserie="totaliPagineSerie"
       :precfilm="paginaPrecedenteFilm"
       :precserie="paginaPrecedenteSerie"
-      :stelle="voto"/>
+      :stelle="voto"
+      :caricamentoFilm="loadingFilm"
+      :caricamentoSerie="loadingSerie"/>
     </div>
   </body>
 </template>
@@ -36,12 +38,16 @@ export default {
       filmMostrati: [],
       serieMostrate: [],
       voto: [],
+      loadingFilm: false,
+      loadingSerie: false
     }
   },
   methods: {
     paginaSuccessivaFilm(){
       if (this.parolaChiave != '') {
         if (this.paginaFilm < this.totaliPagineFilm) {
+          this.loadingFilm = true
+          this.filmMostrati = []
           this.paginaFilm++
           this.libreriaFilm()
         }
@@ -50,6 +56,8 @@ export default {
     paginaPrecedenteFilm(){
       if (this.parolaChiave != '') {
         if (this.paginaFilm > 1) {
+          this.loadingFilm = true
+          this.filmMostrati = []
           this.paginaFilm--
           this.libreriaFilm()
         }
@@ -58,6 +66,8 @@ export default {
     paginaSuccessivaSerie(){
       if (this.parolaChiave != '') {
         if (this.paginaSerie < this.totaliPagineSerie) {
+          this.loadingSerie = true
+          this.serieMostrate = []
           this.paginaSerie++
           this.libreriaSerie()
         }
@@ -66,12 +76,16 @@ export default {
     paginaPrecedenteSerie(){
       if (this.parolaChiave != '') {
         if (this.paginaSerie >1) {
+          this.loadingSerie = true
+          this.serieMostrate = []
           this.paginaSerie--
           this.libreriaSerie()
         }
       }
     },
     cerca(parola) {
+      this.loadingSerie = true
+      this.loadingFilm = true
       this.parolaChiave = parola
       this.paginaFilm = 0
       this.paginaSerie = 0
@@ -92,6 +106,7 @@ export default {
           this.totaliPagineFilm = (response.data.total_pages)
           if (this.paginaFilm <= this.totaliPagineFilm) {
             this.filmMostrati = response.data.results
+            this.loadingFilm = false;
           }
           console.log(this.filmMostrati);
         })
@@ -112,6 +127,7 @@ export default {
           this.voto = (response.data.vote_average)
           if (this.paginaSerie <= this.totaliPagineSerie) {
             this.serieMostrate = response.data.results
+            this.loadingSerie = false;
           }
           console.log(this.serieMostrate);
         })
